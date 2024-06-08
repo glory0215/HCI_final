@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <title>pet</title>
+    <meta name="renderer" content="webkit" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="pet"></div>
+    <script src="http://qiniu.oorzc.cn/pet/js/pet.js"></script>
+    <script>
+        var opt = {
+            drag: true,
+            showChat: true,
+            //themeUrl: "./pet.less", //自定义主题less文件链接 使用themeUrl下面的color会失效
+            color: "brown",
+            size: "auto",
+            menu: {
+                $title: '你想做什么呢？',
+                //'关于小精灵': function () {
+                //    window.open("https://www.npmjs.com/package/pet2");
+                //},
+                //'多久没洗澡': '(╯﹏╰）我已经有 ' + Math.floor((+new Date - 1456998485780) / (1000 * 60 * 60 * 24)) + '天没洗澡了~',
+                '拍打喂食': {
+                    $title: '要来点什么呢？',
+                    '小饼干': '嗷呜~ 多谢款待  >ω<',
+                    '胡萝卜': '人家又不是小兔子 QwQ'
+                },
+                '唤起输入框': ["你想知道什么呢？", (val, done) => {
+                    // val, 输入值
+                    // done 关闭对话框函数
+                    pet.sayWords(val);
+                    done()
+                }],
+                '去冥想': function() {
+                    window.location.href = './whitenoise/whitenoise.html'
+                },
+                '说出一段话': "balabalabalabalabala......",
+                '说出一段话2': function () {
+                    pet.sayWords("我是聊天内容2");
+                },
+                '无线级菜单': {
+                    $title: "我是第二级进入标题",
+                    第二级功能: function () {
+                        alert("我是第二级")
+                    },
+                    第三级: {
+                        $title: "我是第三级进入标题",
+                        第四级: {
+                            $title: "我是第四级进入标题",
+                            第五级: "我是第五级内容",
+                        },
+                    },
+                },
+                /*'帮它洗澡': {
+                    $title: "洗啊洗啊洗澡澡",
+                    "蓝色": function () {
+                        pet.changeColor("blue");
+                    },
+                    "绿色": function () {
+                        pet.changeColor("green");
+                    },
+                    "黄色": function () {
+                        pet.changeColor("yellow");
+                    },
+                    "红色": function () {
+                        pet.changeColor("red");
+                    },
+                    "粉红": function () {
+                        pet.changeColor("pink");
+                    },
+                    "紫色": function () {
+                        pet.changeColor("purple");
+                    },
+                    "黑色": function () {
+                        pet.changeColor("black");
+                    },
+                    "棕色": function () {
+                        pet.changeColor("brown");
+                    }
+                },*/
+                '改变大小': {
+                    $title: "变变变",
+                    "超大": function () {
+                        pet.changeSize("large");
+                    },
+                    "大": function () {
+                        pet.changeSize("big");
+                    },
+                    "正常": function () {
+                        pet.changeSize("small");
+                    },
+                    "小": function () {
+                        pet.changeSize("mini");
+                    },
+                },
+                '改变颜色':{
+                    $title: "变变变",
+                    "蓝色": function () {
+                        pet.changeColor("blue");
+                    },
+                    "绿色": function () {
+                        pet.changeColor("green");
+                    },
+                    "黄色": function () {
+                        pet.changeColor("yellow");
+                    },
+                    "红色": function () {
+                        pet.changeColor("red");
+                    },
+                    "紫色": function () {
+                        pet.changeColor("purple");
+                    },
+                    "粉色": function () {
+                        pet.changeColor("pink");
+                    },
+                    "黑色": function () {
+                        pet.changeColor("black");
+                    },
+                    "棕色": function () {
+                        pet.changeColor("brown");
+                    },
+                    
+                },
+                '还原设置': {
+                    $title: "你想还原哪项设置？",
+                    所有: function () {
+                        pet.clearAll();
+                        pet.sayWords("操作成功");
+                    },
+                    大小: function () {
+                        pet.clearAll("size");
+                        pet.sayWords("操作成功");
+                    },
+                    颜色: function () {
+                        pet.clearAll("color");
+                        pet.sayWords("操作成功");
+                    },
+                    位置: function () {
+                        pet.clearAll("pos");
+                        pet.sayWords("操作成功");
+                    },
+                },
+                '隐藏小精灵': function () {
+                    pet.hide();
+                },
+            },
+            words: [
+                "我们一起聊天吧 ヽ(✿ﾟ▽ﾟ)ノ",
+                "咦你想说什么 oAo ?",
+                //"o(╯□╰)o主人你今天是不是忘记吃药了！",
+                //"你走，我没有你这么蠢的主人╮(╯▽╰)╭",
+                "不要调戏我，我生气超凶的٩(๑`^´๑)۶",
+                "看什么看，没见过这么可爱的的小精灵吗？(o°ω°o)",
+                "咕~~(╯﹏╰)b，铲屎的，我已经很久没吃好吃的了，你看着办！",
+            ]
+        };
+        pet.init(opt);
+    </script>
+</body>
+
+</html>
