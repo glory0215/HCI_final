@@ -15,10 +15,32 @@
             margin: 0;
             padding: 0;
         }
+
+        video {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -9999;
+        }
+
+        audio {
+            position: fixed;
+            bottom: 0;
+        }
     </style>
 </head>
 
 <body>
+    <video autoplay loop muted style="width: 100%">
+        <source src="./Resource/bg.mp4" />
+    </video>
+    <audio autoplay="autoplay" controls="controls" loop="loop" preload="auto" src="./Resource/music.mp3">
+    </audio>
+
     <div id="pet"></div>
     <script src="http://qiniu.oorzc.cn/pet/js/pet.js"></script>
     <script>
@@ -45,7 +67,7 @@
                     pet.sayWords(val);
                     done()
                 }],
-                '去冥想': function() {
+                '去冥想': function () {
                     window.location.href = './whitenoise/whitenoise.html'
                 },
                 '说出一段话': "balabalabalabalabala......",
@@ -107,7 +129,7 @@
                         pet.changeSize("mini");
                     },
                 },
-                '改变颜色':{
+                '改变颜色': {
                     $title: "变变变",
                     "蓝色": function () {
                         pet.changeColor("blue");
@@ -133,7 +155,7 @@
                     "棕色": function () {
                         pet.changeColor("brown");
                     },
-                    
+
                 },
                 '还原设置': {
                     $title: "你想还原哪项设置？",
