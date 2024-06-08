@@ -40,7 +40,7 @@
     </video>
     <audio autoplay="autoplay" controls="controls" loop="loop" preload="auto" src="./Resource/music.mp3">
     </audio>
-
+    <script type="text/javascript" src="./quotes.js"></script>
     <div id="pet"></div>
     <script src="http://qiniu.oorzc.cn/pet/js/pet.js"></script>
     <script>
@@ -67,14 +67,14 @@
                     pet.sayWords(val);
                     done()
                 }],
-                '去冥想': function () {
+                '白噪声': function () {
                     window.location.href = './whitenoise/whitenoise.html'
                 },
-                '说出一段话': "balabalabalabalabala......",
+                '励志语录': quotes[Math.floor(Math.random() * quotes.length)],
                 '说出一段话2': function () {
                     pet.sayWords("我是聊天内容2");
                 },
-                '无线级菜单': {
+                '无限级菜单': {
                     $title: "我是第二级进入标题",
                     第二级功能: function () {
                         alert("我是第二级")
