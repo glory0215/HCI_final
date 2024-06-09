@@ -44,6 +44,50 @@
     <div id="pet"></div>
     <script src="http://qiniu.oorzc.cn/pet/js/pet.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="text/javascript">
+        async function callOpenAIAPI(userMessage, retryCount = 3) {
+            const url = 'https://api.openai-hk.com/v1/chat/completions';
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': 'hk-b5ebou100003455862bf0a7c7fb6b97e2ced83b921dc454d'
+            };
+
+            const data = {
+                max_tokens: 1200,
+                model: 'gpt-3.5-turbo',
+                temperature: 0.8,
+                top_p: 1,
+                presence_penalty: 1,
+                messages: [
+                    {
+                        role: 'system',
+                        content: 'You are ChatGPT, a large language model trained by OpenAI. Answer as concisely as possible.'
+                    },
+                    {
+                        role: 'user',
+                        content: userMessage
+                    }
+                ]
+            };
+
+            for (let attempt = 0; attempt < retryCount; attempt++) {
+                try {
+                    const response = await axios.post(url, data, { headers });
+                    return response.data.choices[0].message.content;
+                } catch (error) {
+                    if (error.response && error.response.status === 429) {
+                        console.warn('Rate limit exceeded, retrying in 1 second...');
+                        await new Promise(resolve => setTimeout(resolve, 1000)); // 等待1秒后重试
+                    } else {
+                        console.error('Error calling OpenAI API:', error);
+                        throw new Error('对不起，我无法处理你的请求。');
+                    }
+                }
+            }
+            throw new Error('对不起，请求次数过多，请稍后再试。');
+        }
+    </script>
     <script>
         var opt = {
             drag: true,
@@ -51,28 +95,35 @@
             //themeUrl: "./pet.less", //自定义主题less文件链接 使用themeUrl下面的color会失效
             color: "brown",
             size: "auto",
+            showText : "主人，你来了！",
             menu: {
-                $title: '你想做什么呢？',
+                $title: '主人，你想做什么呢？',
                 //'关于小精灵': function () {
                 //    window.open("https://www.npmjs.com/package/pet2");
                 //},
                 //'多久没洗澡': '(╯﹏╰）我已经有 ' + Math.floor((+new Date - 1456998485780) / (1000 * 60 * 60 * 24)) + '天没洗澡了~',
+                
                 '拍打喂食': {
                     $title: '要来点什么呢？',
                     '小饼干': '嗷呜~ 多谢款待  >ω<',
-                    '胡萝卜': '人家又不是小兔子 QwQ'
+                    '胡萝卜': '人家又不是小兔子 QwQ',
+                    
                 },
-                '唤起输入框': ["你想知道什么呢？", (val, done) => {
-                    // val, 输入值
-                    // done 关闭对话框函数
-                    pet.sayWords(val);
-                    done()
+                '解答问题': ["你想问什么呢？", async (val, done) => {
+                    try {
+                        const response = await callOpenAIAPI(val);
+                        pet.sayWords(response);
+                    } catch (error) {
+                        pet.sayWords(error.message);
+                    } finally {
+                        done(); // 确保在异步操作完成后关闭对话框
+                    }
                 }],
                 '白噪声': function () {
                     window.location.href = './whitenoise/whitenoise.html'
                 },
                 '励志语录': quotes[Math.floor(Math.random() * quotes.length)],
-                '解答心中的疑惑': function () {
+                '翻开答案之书': function () {
                     $.ajax({
                     url: 'https://www.freeapis.cn/api/yulu/daan',
                     data: {
@@ -98,7 +149,7 @@
                 //'说出一段话2': function () {
                 //    pet.sayWords("我是聊天内容2");
                 //},
-                '无限级菜单': {
+                /*'无限级菜单': {
                     $title: "我是第二级进入标题",
                     第二级功能: function () {
                         alert("我是第二级")
@@ -110,38 +161,13 @@
                             第五级: "我是第五级内容",
                         },
                     },
-                },
-                /*'帮它洗澡': {
-                    $title: "洗啊洗啊洗澡澡",
-                    "蓝色": function () {
-                        pet.changeColor("blue");
-                    },
-                    "绿色": function () {
-                        pet.changeColor("green");
-                    },
-                    "黄色": function () {
-                        pet.changeColor("yellow");
-                    },
-                    "红色": function () {
-                        pet.changeColor("red");
-                    },
-                    "粉红": function () {
-                        pet.changeColor("pink");
-                    },
-                    "紫色": function () {
-                        pet.changeColor("purple");
-                    },
-                    "黑色": function () {
-                        pet.changeColor("black");
-                    },
-                    "棕色": function () {
-                        pet.changeColor("brown");
-                    }
                 },*/
+                
                 '改变大小': {
                     $title: "变变变",
                     "超大": function () {
                         pet.changeSize("large");
+                        
                     },
                     "大": function () {
                         pet.changeSize("big");
@@ -204,7 +230,7 @@
                     pet.hide();
                 },
             },
-            words: [
+            /*words: [
                 "我们一起聊天吧 ヽ(✿ﾟ▽ﾟ)ノ",
                 "咦你想说什么 oAo ?",
                 //"o(╯□╰)o主人你今天是不是忘记吃药了！",
@@ -212,7 +238,7 @@
                 "不要调戏我，我生气超凶的٩(๑`^´๑)۶",
                 "看什么看，没见过这么可爱的的小精灵吗？(o°ω°o)",
                 "咕~~(╯﹏╰)b，铲屎的，我已经很久没吃好吃的了，你看着办！",
-            ]
+            ]*/
         };
         pet.init(opt);
     </script>
