@@ -43,6 +43,7 @@
     <script type="text/javascript" src="./quotes.js"></script>
     <div id="pet"></div>
     <script src="http://qiniu.oorzc.cn/pet/js/pet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         var opt = {
             drag: true,
@@ -71,9 +72,32 @@
                     window.location.href = './whitenoise/whitenoise.html'
                 },
                 '励志语录': quotes[Math.floor(Math.random() * quotes.length)],
-                '说出一段话2': function () {
-                    pet.sayWords("我是聊天内容2");
+                '解答心中的疑惑': function () {
+                    $.ajax({
+                    url: 'https://www.freeapis.cn/api/yulu/daan',
+                    data: {
+                        key: 'jWJCiIRrGWMu7xOczQuphpeek6', // API密钥
+                    },
+                    type: 'GET', // 请求协议（GET或POST）
+                    dataType: 'text', // 返回的数据类型
+                    success: function(data) {
+                        console.log(data); // 请求成功，输出结果到控制台
+                        pet.sayWords(data); // 输出结果到页面
+                    },
+                    timeout: 3000, // 超时时间（毫秒）
+                    error: function(xhr, status, error) {
+                        console.log('请求失败'); // 失败处理
+                        console.log('状态：', status); // 输出状态
+                        console.log('错误：', error); // 输出错误
+                        pet.sayWords('请求失败: ' + error);
+                        //$('#output').text(data)
+                    }
+                })
+                    
                 },
+                //'说出一段话2': function () {
+                //    pet.sayWords("我是聊天内容2");
+                //},
                 '无限级菜单': {
                     $title: "我是第二级进入标题",
                     第二级功能: function () {
