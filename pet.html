@@ -95,19 +95,19 @@
             //themeUrl: "./pet.less", //自定义主题less文件链接 使用themeUrl下面的color会失效
             color: "brown",
             size: "auto",
-            showText : "主人，你来了！",
+            showText: "主人，你来了！",
             menu: {
                 $title: '主人，你想做什么呢？',
                 //'关于小精灵': function () {
                 //    window.open("https://www.npmjs.com/package/pet2");
                 //},
                 //'多久没洗澡': '(╯﹏╰）我已经有 ' + Math.floor((+new Date - 1456998485780) / (1000 * 60 * 60 * 24)) + '天没洗澡了~',
-                
+
                 '拍打喂食': {
                     $title: '要来点什么呢？',
                     '小饼干': '嗷呜~ 多谢款待  >ω<',
                     '胡萝卜': '人家又不是小兔子 QwQ',
-                    
+
                 },
                 '解答问题': ["你想问什么呢？", async (val, done) => {
                     try {
@@ -122,29 +122,31 @@
                 '白噪声': function () {
                     window.location.href = './whitenoise/whitenoise.html'
                 },
-                '励志语录': quotes[Math.floor(Math.random() * quotes.length)],
+                '励志语录': function () {
+                    pet.sayWords(quotes[Math.floor(Math.random() * quotes.length)])
+                },
                 '翻开答案之书': function () {
                     $.ajax({
-                    url: 'https://www.freeapis.cn/api/yulu/daan',
-                    data: {
-                        key: 'jWJCiIRrGWMu7xOczQuphpeek6', // API密钥
-                    },
-                    type: 'GET', // 请求协议（GET或POST）
-                    dataType: 'text', // 返回的数据类型
-                    success: function(data) {
-                        console.log(data); // 请求成功，输出结果到控制台
-                        pet.sayWords(data); // 输出结果到页面
-                    },
-                    timeout: 3000, // 超时时间（毫秒）
-                    error: function(xhr, status, error) {
-                        console.log('请求失败'); // 失败处理
-                        console.log('状态：', status); // 输出状态
-                        console.log('错误：', error); // 输出错误
-                        pet.sayWords('请求失败: ' + error);
-                        //$('#output').text(data)
-                    }
-                })
-                    
+                        url: 'https://www.freeapis.cn/api/yulu/daan',
+                        data: {
+                            key: 'jWJCiIRrGWMu7xOczQuphpeek6', // API密钥
+                        },
+                        type: 'GET', // 请求协议（GET或POST）
+                        dataType: 'text', // 返回的数据类型
+                        success: function (data) {
+                            console.log(data); // 请求成功，输出结果到控制台
+                            pet.sayWords(data); // 输出结果到页面
+                        },
+                        timeout: 3000, // 超时时间（毫秒）
+                        error: function (xhr, status, error) {
+                            console.log('请求失败'); // 失败处理
+                            console.log('状态：', status); // 输出状态
+                            console.log('错误：', error); // 输出错误
+                            pet.sayWords('请求失败: ' + error);
+                            //$('#output').text(data)
+                        }
+                    })
+
                 },
                 //'说出一段话2': function () {
                 //    pet.sayWords("我是聊天内容2");
@@ -162,12 +164,12 @@
                         },
                     },
                 },*/
-                
+
                 '改变大小': {
                     $title: "变变变",
                     "超大": function () {
                         pet.changeSize("large");
-                        
+
                     },
                     "大": function () {
                         pet.changeSize("big");
